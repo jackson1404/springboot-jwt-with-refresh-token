@@ -3,3 +3,7 @@ spring:
     name: jwt-auth.with-refresh-token
 
 
+jwt:
+  private-key: classpath:jwt/app.key
+  public-key: classpath:jwt/app.pub
+  ttl: 15m
