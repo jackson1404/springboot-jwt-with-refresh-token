@@ -23,7 +23,7 @@ public class UserRegistrationService {
 
         if(userRepository.existsByUserName(requestDto.userName()) ||
                 userRepository.existsByUserEmail(requestDto.userEmail())){
-            throw new ValidationException("UserName or Email Already Exist.!")
+            throw new ValidationException("UserName or Email Already Exist.!");
         }
 
         UserEntity userEntity = new UserEntity();
