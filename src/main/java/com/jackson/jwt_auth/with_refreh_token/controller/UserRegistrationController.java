@@ -3,6 +3,8 @@ package com.jackson.jwt_auth.with_refreh_token.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationResponseDto;
+import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
+import com.jackson.jwt_auth.with_refreh_token.mapper.UserRegistrationMapper;
 import com.jackson.jwt_auth.with_refreh_token.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,16 @@ public class UserRegistrationController {
 
     private final UserRegistrationService userRegistrationService;
 
+    private final UserRegistrationMapper mapper;
+
     @PostMapping("/userSignUp")
     public ResponseEntity<RegistrationResponseDto> signUpUser(
             @Valid @RequestBody final RegistrationRequestDto requestDto
             ){
 
-        final var userRegister = userRegistrationService.registerUser(requestDto);
+        UserEntity userEntity = userRegistrationService.registerUser(requestDto);
 
-        return ResponseEntity.ok()
+        return ResponseEntity.ok(
+                mapper.toRegistrationResponseDto(userEntity));
     }
 }
