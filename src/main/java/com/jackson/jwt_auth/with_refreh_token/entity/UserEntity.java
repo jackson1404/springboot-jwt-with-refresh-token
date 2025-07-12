@@ -7,6 +7,8 @@
 package com.jackson.jwt_auth.with_refreh_token.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,7 +30,9 @@ import java.util.UUID;
 @Table(name = "tbl_users")
 @Data
 @RequiredArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
