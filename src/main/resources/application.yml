@@ -17,6 +17,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
-  private-key: classpath:jwt/app.key
-  public-key: classpath:jwt/app.pub
+  private-key: classpath:jwt/private.pem
+  public-key: classpath:jwt/public.pem
   ttl: 15m
