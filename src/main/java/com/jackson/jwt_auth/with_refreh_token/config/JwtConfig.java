@@ -15,13 +15,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.Duration;
 
 /**
@@ -34,17 +40,22 @@ import java.time.Duration;
 
 @Configuration
 @Data
-@ConfigurationProperties(prefix = "jwt")
 public class JwtConfig {
 
-    private RSAPrivateKey rsaPrivateKey;
+    @Value("${jwt.private-key}")
+    private Resource privateKeyResource;
 
-    private RSAPublicKey rsaPublicKey;
+    @Value("${jwt.public-key}")
+    private Resource publicKeyResource;
 
+    @Value("${jwt.ttl}")
     private Duration ttl;
 
     @Bean
-    public JwtEncoder jwtEncoder(){
+    public JwtEncoder jwtEncoder() throws Exception {
+        RSAPublicKey rsaPublicKey = (RSAPublicKey) readPublicKey();
+        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) readPrivateKey();
+
         final var jwk = new RSAKey.Builder(rsaPublicKey)
                 .privateKey(rsaPrivateKey)
                 .build();
@@ -53,7 +64,9 @@ public class JwtConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder(){
+    public JwtDecoder jwtDecoder() throws Exception {
+        RSAPublicKey rsaPublicKey = (RSAPublicKey) readPublicKey();
+
         return NimbusJwtDecoder.withPublicKey(rsaPublicKey).build();
     }
 
@@ -63,6 +76,28 @@ public class JwtConfig {
             final JwtEncoder jwtEncoder) {
 
         return new JwtService(appName, ttl, jwtEncoder);
+    }
+
+    private PublicKey readPublicKey() throws Exception {
+        String key = new String(publicKeyResource.getInputStream().readAllBytes());
+        key = key.replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replaceAll("\\s+", ""); // remove line breaks and whitespace
+
+        byte[] decoded = java.util.Base64.getDecoder().decode(key);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
+        return KeyFactory.getInstance("RSA").generatePublic(spec);
+    }
+
+    private PrivateKey readPrivateKey() throws Exception {
+        String key = new String(privateKeyResource.getInputStream().readAllBytes());
+        key = key.replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s+", "");
+
+        byte[] decoded = java.util.Base64.getDecoder().decode(key);
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
+        return KeyFactory.getInstance("RSA").generatePrivate(spec);
     }
 
 
