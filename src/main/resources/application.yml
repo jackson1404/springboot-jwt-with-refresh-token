@@ -1,7 +1,11 @@
 spring:
   application:
     name: jwt-auth.with-refresh-token
-
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jwt_test_db
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
 
 jwt:
   private-key: classpath:jwt/app.key
