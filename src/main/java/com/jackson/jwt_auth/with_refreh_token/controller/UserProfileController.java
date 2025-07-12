@@ -1,6 +1,8 @@
 package com.jackson.jwt_auth.with_refreh_token.controller;
 
 import com.jackson.jwt_auth.with_refreh_token.dto.UserProfileDto;
+import com.jackson.jwt_auth.with_refreh_token.mapper.UserProfileMapper;
+import com.jackson.jwt_auth.with_refreh_token.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,9 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserProfileController {
 
+    private final UserService userProfileService;
+    private final UserProfileMapper userProfileMapper;
+
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDto> getProfile(
             final Authentication authentication){
+
+        userProfileService.
 
     }
 }
