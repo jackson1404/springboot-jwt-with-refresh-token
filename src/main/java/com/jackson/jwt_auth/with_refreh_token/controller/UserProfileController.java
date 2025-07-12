@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserProfileController {
 
-    private final UserService userProfileService;
+    private final UserService userService;
     private final UserProfileMapper userProfileMapper;
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDto> getProfile(
             final Authentication authentication){
 
-        UserEntity userEntity = userProfileService.getUserByUsername(authentication.getName());
+        UserEntity userEntity = userService.getUserByUsername(authentication.getName());
 
         return ResponseEntity.ok(userProfileMapper.toProfileDto(userEntity));
 
