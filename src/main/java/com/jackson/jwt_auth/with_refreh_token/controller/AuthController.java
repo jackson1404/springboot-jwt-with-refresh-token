@@ -21,7 +21,7 @@ public class AuthController {
 
     private final UserAuthService userAuthService;
 
-    @PostMapping("/signUp")
+    @PostMapping("/signIn")
     public ResponseEntity<AuthenticationResponseDto> signUpUser(@RequestBody final AuthenticationRequestDto requestDto){
 
         return ResponseEntity.ok(userAuthService.authenticate(requestDto));
