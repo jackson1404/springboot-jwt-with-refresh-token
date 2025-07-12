@@ -1,5 +1,7 @@
 package com.jackson.jwt_auth.with_refreh_token.controller;
 
+import com.jackson.jwt_auth.with_refreh_token.dto.AuthenticationRequestDto;
+import com.jackson.jwt_auth.with_refreh_token.dto.AuthenticationResponseDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationResponseDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
@@ -20,7 +22,7 @@ public class AuthController {
     private final UserAuthService userAuthService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<RegistrationResponseDto> signUpUser(@RequestBody final RegistrationRequestDto requestDto){
+    public ResponseEntity<AuthenticationResponseDto> signUpUser(@RequestBody final AuthenticationRequestDto requestDto){
 
         return ResponseEntity.ok(userAuthService.authenticate(requestDto));
     }
