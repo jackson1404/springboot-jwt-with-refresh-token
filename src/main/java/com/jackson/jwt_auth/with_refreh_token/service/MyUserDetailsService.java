@@ -20,11 +20,14 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return userRepository.findByUserName(username)
                 .map(userEntity ->  {
-                    if(userEntity.isEmailVerificationRequired() &&
-                    !userEntity.isEmailVerified()){
-                        throw new EmailVerificationException("")
+                    if (userEntity.isEmailVerificationRequired() && !userEntity.isEmailVerified()){
+                        throw new EmailVerificationException("Your email is not verified ");
                     }
-
+                    return User
+                            .builder()
+                            .username(username)
+                            .password(userEntity.getUserPassword())
+                            .build();
                 }).orElseThrow(()-> new UsernameNotFoundException(
                         "User with this name [%s] not found ".formatted(username)));
     }
