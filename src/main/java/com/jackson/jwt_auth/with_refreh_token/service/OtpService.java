@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,16 @@ public class OtpService {
         return otp;
     }
 
+    public boolean isOtpValid(final Long userId, String otp){
+        final var cacheKey = getCacheKey(userId);
+        return Objects.equals(
+                redisTemplate.opsForValue().get(cacheKey), otp);
+    }
 
+    public void deleteOtp(final Long userId){
+        final var cacheKey = getCacheKey(userId);
+        redisTemplate.delete(cacheKey);
+    }
 
     public String getCacheKey(final Long userId){
         return "otp:%s".formatted(userId);
