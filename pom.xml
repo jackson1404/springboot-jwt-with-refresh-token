@@ -64,6 +64,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+			<version>9.22.3</version> <!-- or higher -->
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

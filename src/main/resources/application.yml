@@ -1,6 +1,18 @@
 spring:
+  cache:
+    type: redis
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
   flyway:
-    enabled: false
+    enabled: true
   application:
     name: jwt-auth.with-refresh-token
   datasource:
@@ -21,8 +33,8 @@ spring:
             enable: true
           connectiontimeout: 5000
   jpa:
-    hibernate:
-      ddl-auto: update
+#    hibernate:
+#      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

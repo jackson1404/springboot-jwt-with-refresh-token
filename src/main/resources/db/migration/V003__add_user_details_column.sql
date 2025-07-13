@@ -1,0 +1,2 @@
+ALTER TABLE tbl_users
+ADD COLUMN user_address VARCHAR(255) NOT NULL;

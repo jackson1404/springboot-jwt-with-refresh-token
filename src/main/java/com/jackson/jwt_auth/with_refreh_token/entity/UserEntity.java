@@ -56,4 +56,10 @@ public class UserEntity {
     @LastModifiedDate
     private Instant updatedAt;
 
+    @Column(name = "email_verified")
+    private boolean emailVerified;
+
+    @Column(name = "user_address", nullable = false)
+    private String userAddress;
+
 }
