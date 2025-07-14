@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.nio.file.LinkOption;
+import java.time.Instant;
+import java.util.Optional;
 
 /**
  * RefreshTokenRepository Class.
@@ -21,4 +23,6 @@ import java.nio.file.LinkOption;
  */
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity, Long> {
+
+    Optional<RefreshTokenEntity> findByRefreshTokenIdAndExpiredAtAfter(Long refreshTokenId, Instant date);
 }
