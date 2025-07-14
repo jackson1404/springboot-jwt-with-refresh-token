@@ -53,7 +53,7 @@ public class EmailVerificationService {
     }
 
     public void resendVerificationToken(String userEmail){
-        UserEntity user = userRepository.findByEmail(userEmail)
+        UserEntity user = userRepository.findByUserEmail(userEmail)
                 .filter(userEntity -> !userEntity.isEmailVerified() && userEntity.isEmailVerificationRequired())
                 .orElseThrow(() -> new RuntimeException("Email not found"));
 

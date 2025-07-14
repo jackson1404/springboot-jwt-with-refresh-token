@@ -30,13 +30,10 @@ public class AuthController {
 
     @GetMapping("/emailVerify")
     public ResponseEntity<?> verifyEmail(
-            @RequestParam("uid") Long userId, @RequestParam("token") String token
-    ){
+            @RequestParam("uid") Long userId, @RequestParam("token") String token){
 
         UserEntity user = emailVerificationService.verifyEmail(userId, token);
-
         return ResponseEntity.ok(user);
-
     }
 
     @PostMapping("/resendVerification")
@@ -49,6 +46,12 @@ public class AuthController {
     public ResponseEntity<?> getRefreshToken(@RequestParam("refreshTokenId") Long refreshTokenId){
         AuthenticationResponseDto responseDto = userAuthService.getRefreshToken(refreshTokenId);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> revokeToken(@RequestParam Long refreshToken) {
+        userAuthService.revokeRefreshToken(refreshToken);
+        return ResponseEntity.noContent().build();
     }
 
 }

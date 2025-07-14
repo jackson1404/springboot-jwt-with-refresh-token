@@ -42,8 +42,9 @@ public class UserAuthService {
 
         RefreshTokenEntity refreshToken = new RefreshTokenEntity();
         refreshToken.setUser(user);
-        // 7 days
+
         long refreshTokenTtlInSeconds = 7 * 24 * 60 * 60;
+
         refreshToken.setExpiredAt(Instant.now().plusSeconds(refreshTokenTtlInSeconds));
         refreshTokenRepository.save(refreshToken);
 
@@ -54,7 +55,7 @@ public class UserAuthService {
 
         RefreshTokenEntity refreshToken = refreshTokenRepository.findByRefreshTokenIdAndExpiredAtAfter(
                 refreshTokenId, Instant.now())
-                .orElseThrow(() -> new ValidationException("Token is expired or invalid"));
+                .orElseThrow(() -> new ValidationException("Invalid or expired refresh token"));
 
         final String userName = refreshToken.getUser().getUserName();
 
@@ -62,5 +63,9 @@ public class UserAuthService {
 
         return new AuthenticationResponseDto(newAccessToken, refreshTokenId);
 
+    }
+
+    public void revokeRefreshToken(Long refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
     }
 }
