@@ -22,6 +22,6 @@ public class UserRegistrationMapper {
             final UserEntity user) {
 
         return new RegistrationResponseDto(
-                user.getUserEmail(), user.getUserName());
+                user.getUserEmail(), user.getUserName(), user.isEmailVerificationRequired());
     }
 }
