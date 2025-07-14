@@ -7,6 +7,7 @@ import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationResponseDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.RefreshTokenEntity;
 import com.jackson.jwt_auth.with_refreh_token.repository.RefreshTokenRepository;
 import com.jackson.jwt_auth.with_refreh_token.repository.UserRepository;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,15 @@ public class UserAuthService {
 
     public AuthenticationResponseDto getRefreshToken(Long refreshTokenId) {
 
+        RefreshTokenEntity refreshToken = refreshTokenRepository.findByRefreshTokenIdAndExpiredAtAfter(
+                refreshTokenId, Instant.now())
+                .orElseThrow(() -> new ValidationException("Token is expired or invalid"));
 
+        final String userName = refreshToken.getUser().getUserName();
+
+        String newAccessToken = jwtService.generateToken(userName);
+
+        return new AuthenticationResponseDto(newAccessToken, refreshTokenId);
 
     }
 }
