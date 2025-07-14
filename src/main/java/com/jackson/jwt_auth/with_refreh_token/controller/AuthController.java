@@ -45,5 +45,10 @@ public class AuthController {
         return ResponseEntity.ok("Email resent.!");
     }
 
+    @PostMapping("/token/refresh")
+    public ResponseEntity<?> getRefreshToken(@RequestParam("refreshTokenId") Long refreshTokenId){
+        AuthenticationResponseDto responseDto = userAuthService.getRefreshToken(refreshTokenId);
+        return ResponseEntity.ok(responseDto);
+    }
 
 }

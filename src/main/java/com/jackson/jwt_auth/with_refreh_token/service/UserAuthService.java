@@ -26,8 +26,6 @@ public class UserAuthService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private final long refreshTokenTtlInSeconds = 7 * 24 * 60 * 60; // 7 days
-
     public AuthenticationResponseDto authenticate(final AuthenticationRequestDto requestDto) {
 
         final var authToken = UsernamePasswordAuthenticationToken
@@ -43,9 +41,17 @@ public class UserAuthService {
 
         RefreshTokenEntity refreshToken = new RefreshTokenEntity();
         refreshToken.setUser(user);
+        // 7 days
+        long refreshTokenTtlInSeconds = 7 * 24 * 60 * 60;
         refreshToken.setExpiredAt(Instant.now().plusSeconds(refreshTokenTtlInSeconds));
         refreshTokenRepository.save(refreshToken);
 
         return new AuthenticationResponseDto(accessToken, refreshToken.getRefreshTokenId());
+    }
+
+    public AuthenticationResponseDto getRefreshToken(Long refreshTokenId) {
+
+
+
     }
 }
