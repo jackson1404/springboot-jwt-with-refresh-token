@@ -25,8 +25,6 @@ public class OtpService {
         return otp;
     }
 
-
-
     public String getCacheKey(final Long userId){
         return "otp:%s".formatted(userId);
     }
