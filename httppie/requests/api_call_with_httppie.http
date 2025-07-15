@@ -1,13 +1,18 @@
-### SignUp (
+### SignUp process
 
 http POST {{API_BASE}}/api/v1/auth/userSignUp \
   name="Jackson Win" \
   email="jack@example.com" \
   "Content-Type: application/json"
 
-### Login 
+### Login process
 
 http POST {{API_BASE}}/api/v1/auth/signIn \
   name="Jackson Win" \
   password="password" \
   "Content-Type: application/json"
+
+### Get Profile
+
+http GET {{API_BASE}}/api/v1/users/profile \
+  "Authorization: Bearer {TOKEN}"
