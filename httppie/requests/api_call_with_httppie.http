@@ -1,8 +1,17 @@
 ### Create New User
-POST {{API_BASE}}/users
+POST {{API_BASE}}/api/v1/auth/userSignUp
 Content-Type: application/json
 
 {
   "name": "Jackson Win",
   "email": "jack@example.com"
+}
+
+### Login
+POST {{API_BaSE}}/api/v1/auth/signIn
+Content-Type: application/json
+
+{
+  "name": "Jackson Win",
+  "password": "password"
 }
