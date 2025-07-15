@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.GONE;
 
 @Service
@@ -20,6 +22,10 @@ public class UserService {
         return userRepository.findByUserName(username)
                 .orElseThrow(() -> new ResponseStatusException(GONE,
                         "The user account has been deleted or inactivated"));
+    }
+
+    public List<UserEntity> findAllUsers(){
+        return userRepository.findAll();
     }
 
 }

@@ -26,13 +26,13 @@ public class OtpService {
         return otp;
     }
 
-    public boolean isOtpValid(final Long userId, String otp){
+    public boolean isOtpValid(final Long userId, final String otp) {
         final var cacheKey = getCacheKey(userId);
         return Objects.equals(
                 redisTemplate.opsForValue().get(cacheKey), otp);
     }
 
-    public void deleteOtp(final Long userId){
+    public void deleteOtp(final Long userId) {
         final var cacheKey = getCacheKey(userId);
         redisTemplate.delete(cacheKey);
     }

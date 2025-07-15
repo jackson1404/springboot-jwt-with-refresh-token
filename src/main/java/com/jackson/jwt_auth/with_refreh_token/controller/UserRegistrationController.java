@@ -5,6 +5,7 @@ import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationResponseDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
 import com.jackson.jwt_auth.with_refreh_token.mapper.UserRegistrationMapper;
+import com.jackson.jwt_auth.with_refreh_token.service.EmailVerificationService;
 import com.jackson.jwt_auth.with_refreh_token.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,16 @@ public class UserRegistrationController {
 
     private final UserRegistrationMapper mapper;
 
+    private EmailVerificationService emailVerificationService;
+
     @PostMapping("/userSignUp")
-    public ResponseEntity<RegistrationResponseDto> signUpUser(
-            @Valid @RequestBody final RegistrationRequestDto requestDto
-            ){
+    public ResponseEntity<RegistrationResponseDto> signUpUser(@Valid @RequestBody final RegistrationRequestDto requestDto){
 
         UserEntity userEntity = userRegistrationService.registerUser(requestDto);
+
+        if (userEntity.isEmailVerificationRequired()) {
+            emailVerificationService.sendVerificationToken(userEntity.getUserId(), userEntity.getUserEmail());
+        }
 
         return ResponseEntity.ok(
                 mapper.toRegistrationResponseDto(userEntity));

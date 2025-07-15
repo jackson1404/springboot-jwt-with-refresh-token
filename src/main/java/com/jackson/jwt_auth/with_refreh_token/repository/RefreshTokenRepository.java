@@ -6,30 +6,23 @@
  * *************************************************************/
 package com.jackson.jwt_auth.with_refreh_token.repository;
 
-import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
+import com.jackson.jwt_auth.with_refreh_token.entity.RefreshTokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.nio.file.LinkOption;
+import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
- * UserRepository Class.
+ * RefreshTokenRepository Class.
  * <p>
  * </p>
  *
  * @author
  */
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity, Long> {
 
-    Optional<UserEntity> findByUserName(String userName);
-
-    Optional<UserEntity> findByUserId(Long userId);
-
-    boolean existsByUserName(String userName);
-
-    boolean existsByUserEmail(String userEmail);
-
-    Optional<UserEntity> findByUserEmail(String userEmail);
+    Optional<RefreshTokenEntity> findByRefreshTokenIdAndExpiredAtAfter(Long refreshTokenId, Instant date);
 }

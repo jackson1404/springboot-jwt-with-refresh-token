@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
@@ -28,4 +30,12 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileMapper.toProfileDto(userEntity));
 
     }
+
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<UserEntity>> getAllUsers(){
+        List<UserEntity> userEntities = userService.findAllUsers();
+        return ResponseEntity.ok(userEntities);
+    }
+
+
 }

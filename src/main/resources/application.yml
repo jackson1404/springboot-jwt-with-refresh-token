@@ -12,7 +12,7 @@ spring:
         max-idle: 8
         min-idle: 0
   flyway:
-    enabled: true
+    enabled: false
   application:
     name: jwt-auth.with-refresh-token
   datasource:
@@ -42,4 +42,4 @@ spring:
 jwt:
   private-key: classpath:jwt/private.pem
   public-key: classpath:jwt/public.pem
-  ttl: 15m
+  ttl: 1m

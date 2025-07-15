@@ -29,6 +29,9 @@ public class UserRegistrationService {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserEmail(requestDto.userEmail());
         userEntity.setUserName(requestDto.userName());
+        userEntity.setUserAddress(requestDto.userAddress());
+        userEntity.setEmailVerified(false);
+        userEntity.setEmailVerificationRequired(requestDto.isEmailVerificationRequired());
         userEntity.setUserPassword(passwordEncoder.encode(requestDto.userPassword()));
 
         return userRepository.save(userEntity);
