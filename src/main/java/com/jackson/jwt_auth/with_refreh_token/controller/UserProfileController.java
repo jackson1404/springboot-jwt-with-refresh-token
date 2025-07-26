@@ -1,7 +1,9 @@
 package com.jackson.jwt_auth.with_refreh_token.controller;
 
+import com.jackson.jwt_auth.with_refreh_token.dto.UserDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.UserProfileDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
+import com.jackson.jwt_auth.with_refreh_token.mapper.UserDtoMapper;
 import com.jackson.jwt_auth.with_refreh_token.mapper.UserProfileMapper;
 import com.jackson.jwt_auth.with_refreh_token.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class UserProfileController {
 
     private final UserService userService;
     private final UserProfileMapper userProfileMapper;
+    private final UserDtoMapper userDtoMapper;
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDto> getProfile(
@@ -32,9 +35,9 @@ public class UserProfileController {
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<UserEntity>> getAllUsers(){
+    public ResponseEntity<List<UserDto>> getAllUsers(){
         List<UserEntity> userEntities = userService.findAllUsers();
-        return ResponseEntity.ok(userEntities);
+        return ResponseEntity.ok(userDtoMapper.toUserDto(userEntities));
     }
 
 
