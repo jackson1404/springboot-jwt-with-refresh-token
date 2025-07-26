@@ -6,6 +6,7 @@
  * *************************************************************/
 package com.jackson.jwt_auth.with_refreh_token.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,6 +69,7 @@ public class UserEntity {
     private String userAddress;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<RefreshTokenEntity> refreshTokenEntities = new ArrayList<>();
 
 }
