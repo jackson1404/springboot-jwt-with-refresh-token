@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.GONE;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -28,4 +29,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public UserEntity getUserById(Long userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
+                        "User Not Found"));
+    }
 }

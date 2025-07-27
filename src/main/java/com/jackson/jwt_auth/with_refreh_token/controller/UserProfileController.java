@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,7 +38,12 @@ public class UserProfileController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<UserDto>> getAllUsers(){
         List<UserEntity> userEntities = userService.findAllUsers();
-        return ResponseEntity.ok(userDtoMapper.toUserDto(userEntities));
+        return ResponseEntity.ok(userDtoMapper.toUserDtoList(userEntities));
+    }
+
+    @GetMapping("/getUserById")
+    public ResponseEntity<UserDto> getUserById(@RequestParam("userId") Long userId){
+        return ResponseEntity.ok(userDtoMapper.toUserDto(userService.getUserById(userId)));
     }
 
 

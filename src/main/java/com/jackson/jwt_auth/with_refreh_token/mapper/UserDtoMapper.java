@@ -10,7 +10,19 @@ import java.util.stream.Collectors;
 @Component
 public class UserDtoMapper {
 
-    public List<UserDto> toUserDto(List<UserEntity> userEntities) {
+    public UserDto toUserDto(UserEntity userEntity){
+        return UserDto.builder()
+                .userName(userEntity.getUserName())
+                .userEmail(userEntity.getUserEmail())
+                .userAddress(userEntity.getUserAddress())
+                .createdAt(userEntity.getCreatedAt())
+                .isEmailVerified(userEntity.isEmailVerified())
+                .isEmailVerificationRequired(userEntity.isEmailVerificationRequired())
+                .updatedAt(userEntity.getUpdatedAt())
+                .build();
+    }
+
+    public List<UserDto> toUserDtoList(List<UserEntity> userEntities) {
         return userEntities.stream().map(user ->
                 UserDto.builder()
                         .userName(user.getUserName())
