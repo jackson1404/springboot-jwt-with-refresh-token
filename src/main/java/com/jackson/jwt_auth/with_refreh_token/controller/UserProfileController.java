@@ -49,5 +49,10 @@ public class UserProfileController {
         return ResponseEntity.ok(userService.updateUser(userId, requestDto));
     }
 
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
+        return ResponseEntity.ok(userService.deleteUser(userId));
+    }
+
 
 }
