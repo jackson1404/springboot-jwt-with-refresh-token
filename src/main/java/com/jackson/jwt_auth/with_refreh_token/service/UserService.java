@@ -3,6 +3,7 @@ package com.jackson.jwt_auth.with_refreh_token.service;
 import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.UserDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
+import com.jackson.jwt_auth.with_refreh_token.mapper.UserDtoMapper;
 import com.jackson.jwt_auth.with_refreh_token.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final UserDtoMapper userDtoMapper;
 
     public UserEntity getUserByUsername(final String username) {
         return userRepository.findByUserName(username)
@@ -39,5 +42,11 @@ public class UserService {
     }
 
     public UserDto updateUser(Long userId, RegistrationRequestDto requestDto) {
+
+         UserEntity user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
+                        "User Not Found"));
+
+         return userDtoMapper.toUserDto(user);
     }
 }
