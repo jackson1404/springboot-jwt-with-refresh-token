@@ -1,5 +1,7 @@
 package com.jackson.jwt_auth.with_refreh_token.service;
 
+import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
+import com.jackson.jwt_auth.with_refreh_token.dto.UserDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
 import com.jackson.jwt_auth.with_refreh_token.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +32,12 @@ public class UserService {
     }
 
     public UserEntity getUserById(Long userId) {
+        System.out.println("The user Id " + userId);
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
                         "User Not Found"));
+    }
+
+    public UserDto updateUser(Long userId, RegistrationRequestDto requestDto) {
     }
 }

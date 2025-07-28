@@ -1,5 +1,6 @@
 package com.jackson.jwt_auth.with_refreh_token.controller;
 
+import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.UserDto;
 import com.jackson.jwt_auth.with_refreh_token.dto.UserProfileDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
@@ -9,10 +10,7 @@ import com.jackson.jwt_auth.with_refreh_token.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +42,11 @@ public class UserProfileController {
     @GetMapping("/getUserById")
     public ResponseEntity<UserDto> getUserById(@RequestParam("userId") Long userId){
         return ResponseEntity.ok(userDtoMapper.toUserDto(userService.getUserById(userId)));
+    }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<UserDto> updateUser(@RequestParam("userId") Long userId, RegistrationRequestDto requestDto){
+        return ResponseEntity.ok(userService.updateUser(userId, requestDto));
     }
 
 
