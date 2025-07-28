@@ -12,6 +12,7 @@ public class UserDtoMapper {
 
     public UserDto toUserDto(UserEntity userEntity){
         return UserDto.builder()
+                .userId(userEntity.getUserId())
                 .userName(userEntity.getUserName())
                 .userEmail(userEntity.getUserEmail())
                 .userAddress(userEntity.getUserAddress())
@@ -25,6 +26,7 @@ public class UserDtoMapper {
     public List<UserDto> toUserDtoList(List<UserEntity> userEntities) {
         return userEntities.stream().map(user ->
                 UserDto.builder()
+                        .userId(user.getUserId())
                         .userName(user.getUserName())
                         .userEmail(user.getUserEmail())
                         .userAddress(user.getUserAddress())
