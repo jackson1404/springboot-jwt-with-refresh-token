@@ -10,11 +10,10 @@ import com.jackson.jwt_auth.with_refreh_token.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,10 +26,11 @@ public class UserRegistrationController {
 
     private EmailVerificationService emailVerificationService;
 
-    @PostMapping("/userSignUp")
-    public ResponseEntity<RegistrationResponseDto> signUpUser(@Valid @RequestBody final RegistrationRequestDto requestDto){
+    @PostMapping(value = "/userSignUp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RegistrationResponseDto> signUpUser(@RequestPart("userDto") @Valid final RegistrationRequestDto requestDto,
+                                                              @RequestPart(value = "profileImg", required = false) MultipartFile file){
 
-        UserEntity userEntity = userRegistrationService.registerUser(requestDto);
+        UserEntity userEntity = userRegistrationService.registerUser(requestDto, file);
 
         if (userEntity.isEmailVerificationRequired()) {
             emailVerificationService.sendVerificationToken(userEntity.getUserId(), userEntity.getUserEmail());

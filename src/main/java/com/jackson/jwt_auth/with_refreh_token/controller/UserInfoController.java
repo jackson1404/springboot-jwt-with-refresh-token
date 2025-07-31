@@ -12,12 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-public class UserProfileController {
+public class UserInfoController {
+
+    private final Path uploadPath = Paths.get("src/main/resources/img");
 
     private final UserService userService;
     private final UserProfileMapper userProfileMapper;
@@ -49,10 +53,10 @@ public class UserProfileController {
         return ResponseEntity.ok(userService.updateUser(userId, requestDto));
     }
 
-    @DeleteMapping("/deleteUser")
-    public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
-        return ResponseEntity.ok(userService.deleteUser(userId));
-    }
+//    @DeleteMapping("/deleteUser")
+//    public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
+//        return ResponseEntity.ok(userService.deleteUser(userId));
+//    }
 
 
 }

@@ -72,4 +72,7 @@ public class UserEntity {
     @JsonIgnore
     private List<RefreshTokenEntity> refreshTokenEntities = new ArrayList<>();
 
+    @Column(name = "profile_image")
+    private String profileImage;
+
 }
