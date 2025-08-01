@@ -21,8 +21,6 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 public class UserInfoController {
 
-    private final Path uploadPath = Paths.get("src/main/resources/img");
-
     private final UserService userService;
     private final UserProfileMapper userProfileMapper;
     private final UserDtoMapper userDtoMapper;

@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -26,9 +28,11 @@ public class UserRegistrationController {
 
     private EmailVerificationService emailVerificationService;
 
+
+
     @PostMapping(value = "/userSignUp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<RegistrationResponseDto> signUpUser(@RequestPart("userDto") @Valid final RegistrationRequestDto requestDto,
-                                                              @RequestPart(value = "profileImg", required = false) MultipartFile file){
+                                                              @RequestPart(value = "profileImg", required = false) MultipartFile file) throws IOException {
 
         UserEntity userEntity = userRegistrationService.registerUser(requestDto, file);
 

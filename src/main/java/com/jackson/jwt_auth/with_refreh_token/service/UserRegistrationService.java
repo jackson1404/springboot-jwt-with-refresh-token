@@ -4,7 +4,6 @@ import com.jackson.jwt_auth.with_refreh_token.dto.RegistrationRequestDto;
 import com.jackson.jwt_auth.with_refreh_token.entity.UserEntity;
 import com.jackson.jwt_auth.with_refreh_token.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Validation;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,20 +25,32 @@ public class UserRegistrationService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final Path UPLOAD_PATH = Paths.get("src/main/resources/img");
+
     @Transactional
-    public UserEntity registerUser(RegistrationRequestDto requestDto, MultipartFile file){
+    public UserEntity registerUser(RegistrationRequestDto requestDto, MultipartFile file) throws IOException {
 
-        String fileName = null;
+        String profileImageName = null;
 
+        validateUser(requestDto);
+
+        if(file != null && !file.isEmpty()){
+            profileImageName = storeProfileImage(file);
+        }
+
+        UserEntity userEntity = buildUserEntity(requestDto, profileImageName);
+        return userRepository.save(userEntity);
+
+    }
+
+    private void validateUser(RegistrationRequestDto requestDto) {
         if(userRepository.existsByUserName(requestDto.userName()) ||
                 userRepository.existsByUserEmail(requestDto.userEmail())){
             throw new ValidationException("UserName or Email Already Exist.!");
         }
+    }
 
-        if(file != null && !file.isEmpty()){
-            fileName = storeProfileImage(file);
-        }
-
+    private UserEntity buildUserEntity(RegistrationRequestDto requestDto, String fileName) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserEmail(requestDto.userEmail());
         userEntity.setUserName(requestDto.userName());
@@ -48,21 +59,27 @@ public class UserRegistrationService {
         userEntity.setEmailVerificationRequired(requestDto.isEmailVerificationRequired());
         userEntity.setUserPassword(passwordEncoder.encode(requestDto.userPassword()));
         userEntity.setProfileImage(fileName);
-        return userRepository.save(userEntity);
-
+        return userEntity;
     }
 
-    private String storeProfileImage(MultipartFile file) {
+    private String storeProfileImage(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
-        Path savePath = Paths.get("src/main/resources/img/", fileName);
+        checkDirectoryExist();
+
+        Path destinationPath = UPLOAD_PATH.resolve(fileName);
 
         try {
-            Files.write(savePath, file.getBytes());
+            Files.write(destinationPath, file.getBytes());
         } catch (IOException e) {
             throw new RuntimeException("Failed to saved file", e);
         }
         return fileName;
     }
 
+    private void checkDirectoryExist() throws IOException {
+        if(!Files.exists(UPLOAD_PATH)){
+             Files.createDirectories(UPLOAD_PATH);
+        }
+    }
 }
